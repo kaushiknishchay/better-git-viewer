@@ -1,0 +1,33 @@
+{
+  "name": "git-on-web",
+  "version": "1.0.0",
+  "main": "index.js",
+  "repository": "git@github.com:kaushiknishchay/better-git-viewer.git",
+  "author": "Nishchay Kaushik",
+  "license": "MIT",
+  "private": false,
+  "babel": {
+    "presets": [
+      "@babel/preset-env",
+      "@babel/preset-react"
+    ]
+  },
+  "scripts": {
+    "start": "parcel ./public/index.html --open",
+    "build": "NODE_ENV=production parcel build --no-content-hash --no-source-maps ./public/index.html"
+  },
+  "dependencies": {
+    "@material-ui/core": "4.11.2",
+    "@material-ui/icons": "4.11.2",
+    "browserfs": "1.4.3",
+    "isomorphic-git": "1.8.0",
+    "react": "17.0.1",
+    "react-dom": "17.0.1"
+  },
+  "devDependencies": {
+    "@babel/core": "7.12.10",
+    "@babel/preset-env": "^7.12.10",
+    "@babel/preset-react": "7.12.10",
+    "parcel-bundler": "1.12.4"
+  }
+}

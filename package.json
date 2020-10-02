@@ -1,0 +1,13 @@
+{
+  "name": "git-on-web",
+  "version": "1.0.0",
+  "main": "index.js",
+  "repository": "git@github.com:kaushiknishchay/git-on-web.git",
+  "author": "Nishchay Kaushik",
+  "license": "MIT",
+  "private": false,
+  "dependencies": {
+    "browserfs": "^1.4.3",
+    "isomorphic-git": "^1.7.8"
+  }
+}

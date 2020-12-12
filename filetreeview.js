@@ -4,6 +4,9 @@ import Grid from '@material-ui/core/Grid';
 import Paper from '@material-ui/core/Paper';
 import Typography from '@material-ui/core/Typography';
 import { TREE, walk, readBlob } from 'isomorphic-git';
+import Highlight, { defaultProps } from "prism-react-renderer";
+import nightOwl from "prism-react-renderer/themes/nightOwl";
+import github from "prism-react-renderer/themes/nightOwlLight";
 
 import { defaultGitOptions } from './git_options';
 import Tree from './tree';
@@ -36,12 +39,36 @@ const useStyles = makeStyles((theme) => ({
     height: '100%',
     padding: theme.spacing(2),
   },
+  pre: {
+    minHeight: "100%",
+    fontSize: "16px",
+    lineHeight: 1.6,
+    textAlign: 'left',
+    margin: '0 0',
+    overflow: 'auto',
+    whiteSpace: "pre-wrap",
+  },
+  lineNo: {
+    display: "table-cell",
+    textAlign: "right",
+    paddingRight: "1em",
+    userSelect: "none",
+    padding: "2px 5px",
+    // background: "#616161",
+    opacity: "0.5",
+    minWidth: "40px"
+  },
+  lineContent: {
+    paddingLeft: "10px",
+    display: "table-cell",
+  }
 }));
 
 const cache = {};
 
 export default function FileTreeView(props) {
   const [fileTree, updateFileTree] = useState(null);
+  const [codeTheme, setCodeTheme] = useState(nightOwl);
   const [fileContent, updateFileContent] = useState('');
 
   useEffect(async () => {
@@ -69,7 +96,7 @@ export default function FileTreeView(props) {
 
     updateFileTree(tree);
 
-    return () => {};
+    return () => { };
   }, []);
 
   const handleFileClick = useCallback(async (event, nodeId = '') => {
@@ -86,7 +113,10 @@ export default function FileTreeView(props) {
       oid,
     });
 
-    updateFileContent(Buffer.from(blob).toString('utf8'));
+    const code = Buffer.from(blob).toString('utf8');
+    // const html = Prism.highlight(code, Prism.languages.javascript, 'javascript');
+
+    updateFileContent(code);
   }, []);
 
   const classes = useStyles();
@@ -101,15 +131,26 @@ export default function FileTreeView(props) {
         </Paper>
       </Grid>
       <Grid item sm={8} className={classes.fileContentGrid}>
-        <Paper>
-          {fileContent ? (
-            <Typography className={classes.fileContent}>
-              {fileContent}
-            </Typography>
-          ) : (
+        {fileContent ? (
+          <Highlight {...defaultProps} theme={codeTheme} code={fileContent} language="json">
+            {({ className, style, tokens, getLineProps, getTokenProps }) => (
+              <pre className={classes.pre + " " + className} style={style}>
+                {tokens.map((line, i) => (
+                  <div key={i} {...getLineProps({ line, key: i })}>
+                    <span className={classes.lineNo}>{i + 1}</span>
+                    <span className={classes.lineContent}>
+                      {line.map((token, key) => (
+                        <span key={key} {...getTokenProps({ token, key })} />
+                      ))}
+                    </span>
+                  </div>
+                ))}
+              </pre>
+            )}
+          </Highlight>
+        ) : (
             <p>Select a file to view content</p>
           )}
-        </Paper>
       </Grid>
     </Grid>
   );

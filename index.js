@@ -1,12 +1,17 @@
-import React from "react";
-import ReactDOM from "react-dom";
+if (module.hot) {
+  module.hot.accept();
+}
 
+import React from 'react';
+import ReactDOM from 'react-dom';
 
-const rootElement = document.getElementById("root");
+import App from './app';
+
+const rootElement = document.getElementById('root');
 
 ReactDOM.render(
-  <React.StrictMode>
-    Hello
-  </React.StrictMode>,
-  rootElement
+  <>
+    <App />
+  </>,
+  rootElement,
 );

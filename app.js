@@ -17,6 +17,7 @@ const useStyles = makeStyles((theme) => ({
 }));
 
 export default function App() {
+  const [repoCloned, setRepoCloned] = useState(false);
   const [repoBranch] = useState('master');
   const [value, setValue] = React.useState(0);
 
@@ -31,15 +32,26 @@ export default function App() {
       ref: repoBranch,
     });
 
+    setRepoCloned(true);
+
     let commits = await log({
       ...defaultGitOptions,
       ref: repoBranch,
     });
+
     console.log(commits);
 
     return () => {};
   }, []);
   const classes = useStyles();
+
+  if (!repoCloned) {
+    return (
+      <div>
+        Cloning repo locally
+      </div>
+    )
+  }
 
   return (
     <div>

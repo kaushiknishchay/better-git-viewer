@@ -23,7 +23,7 @@
     ]
   },
   "scripts": {
-    "build": "NODE_ENV=production parcel build --no-content-hash --no-source-maps ./public/index.html --public-url /better-git-viewer/",
+    "build": "NODE_ENV=production parcel build --no-source-maps ./public/index.html --public-url /better-git-viewer/",
     "start": "NODE_ENV=development parcel ./public/index.html --open"
   },
   "dependencies": {

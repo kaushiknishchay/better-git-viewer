@@ -14,7 +14,7 @@
   },
   "scripts": {
     "start": "parcel ./public/index.html --open",
-    "build": "NODE_ENV=production parcel build --no-content-hash --no-source-maps ./public/index.html"
+    "build": "NODE_ENV=production parcel build --no-content-hash --no-source-maps ./public/index.html --public-url /better-git-viewer/"
   },
   "dependencies": {
     "@material-ui/core": "4.11.2",

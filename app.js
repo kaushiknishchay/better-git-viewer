@@ -1,14 +1,14 @@
-import React, { useEffect, useState } from 'react';
+import React, { useCallback, useEffect, useState } from 'react';
 import { makeStyles } from '@material-ui/core/styles';
-import Grid from '@material-ui/core/Grid';
-import { clone, log } from 'isomorphic-git';
+import { log } from 'isomorphic-git';
 import AppBar from '@material-ui/core/AppBar';
 import Tabs from '@material-ui/core/Tabs';
 import Tab from '@material-ui/core/Tab';
 
 import TabPanel from './tabpanel';
 import FileTreeView from './filetreeview';
-import { defaultGitOptions } from './git_options';
+import { flushDB } from './git_options';
+import Home from './home';
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -17,6 +17,7 @@ const useStyles = makeStyles((theme) => ({
 }));
 
 export default function App() {
+  const [repoUrl, setRepoUrl] = useState();
   const [repoCloned, setRepoCloned] = useState(false);
   const [repoBranch] = useState('master');
   const [value, setValue] = React.useState(0);
@@ -25,32 +26,30 @@ export default function App() {
     setValue(newValue);
   };
 
-  useEffect(async () => {
-    await clone({
-      ...defaultGitOptions,
-      url: 'https://github.com/kaushiknishchay/React-Native-Restaurant-App',
-      ref: repoBranch,
-    });
-
+  const handleUrlSubmit = useCallback((url) => {
+    setRepoUrl(url);
     setRepoCloned(true);
-
-    let commits = await log({
-      ...defaultGitOptions,
-      ref: repoBranch,
-    });
-
-    console.log(commits);
-
-    return () => {};
   }, []);
+
+  useEffect(() => {
+    // const commits = await log({
+    //   ...defaultGitOptions,
+    //   ref: repoBranch,
+    // });
+
+    // console.log(commits);
+
+    return () => {
+      try {
+        flushDB();
+      } catch (_) {}
+    };
+  }, []);
+
   const classes = useStyles();
 
   if (!repoCloned) {
-    return (
-      <div>
-        Cloning repo locally
-      </div>
-    )
+    return <Home onSubmit={handleUrlSubmit} />;
   }
 
   return (

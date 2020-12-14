@@ -92,7 +92,7 @@ export default function Home(props) {
     await cloneRepo(repoUrl, 'master', onProgress, onMessage);
 
     props.onSubmit(repoUrl);
-  }, []);
+  }, [repoUrl]);
 
   return (
     <Grid container className={classes.root} spacing={2}>
